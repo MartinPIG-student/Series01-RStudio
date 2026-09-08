@@ -121,5 +121,77 @@ ggplot() +
   theme_minimal()
 ```
 
+# Is the weight distribution similar between males and females?
 
+```{r weight-by-gender-histogram}
+ggplot(students, aes(x = Weight, fill = Gender)) +
+  geom_histogram(binwidth = 5, position = position_dodge(width = 4), 
+                 width = 3.5, color = "black") +
+  scale_fill_manual(values = c("F" = "pink", "M" = "steelblue"),
+                     labels = c("F" = "Female", "M" = "Male")) +
+  labs(title = "Histogram of Weight by Gender",
+       x = "Weight (kg)",
+       y = "Frequency (number of students)",
+       fill = "Gender") +
+  theme_minimal()
+```
+Figure 5: Histogram of Weight by Gender. The x-axis represents weight in kilograms (kg), grouped into 5 kg bins. The y-axis represents the number of students (frequency) in each weight category. Female students are shown in pink, male students in blue, displayed side by side to avoid visual overlap between groups.
+
+
+# Is the histogram the best way to visualize this data for this question?
+A histogram gives a quick visual comparison between groups, but it may not be the most reliable choice with this dataset. With only 22 students in total (15 males and 7 females), the sample size, especially for the female group is too small to produce a stable histogram shape. The visual pattern could change noticeably with a different bin width or a slightly different sample. A boxplot or violin plot per gender would likely offer a more robust comparison of central tendency and spread at this sample size. Visually, male weights appear shifted toward higher values than female weights, suggesting the two distributions are not identical.
+
+
+#  Is the weight of males/females significantly different?
+
+What visualization is best to answer this question?
+
+To determine whether weight differs significantly between genders, we need a plot that allows direct, side-by-side comparison of central tendency and spread between the two groups. A boxplot grouped by gender is well suited here: it displays the median, interquartile range, and potential outliers for each group on the same scale, making differences in location and dispersion immediately visible. Unlike the histogram used earlier to explore the overall shape of the distribution, a boxplot does not depend on an arbitrary bin width choice, and it remains readable even with small and unequal group sizes (15 males vs 7 females), a case where an overlapping or dodged histogram becomes harder to interpret visually
+
+```{r}
+ggplot(students, aes(x = Gender, y = Weight, fill = Gender)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1, alpha = 0.5) +
+  scale_fill_manual(values = c("F" = "pink", "M" = "steelblue")) +
+  labs(title = "Weight by Gender", x = "Gender", y = "Weight (kg)") +
+  theme_minimal()
+```
+
+What statistical test is best to answer this question?
+
+Before selecting a statistical test, we first need to check whether the weight data is normally distributed within each group, since this determines whether a parametric test (t-test) or a non-parametric test (Wilcoxon-Mann-Whitney) is appropriate. We use the Shapiro-Wilk test to check this assumption for each gender separately.
+
+
+```{r checked the normality}
+students %>%
+  group_by(Gender) %>%
+  summarise(shapiro_p = shapiro.test(Weight)$p.value)
+```
+
+Before choosing a statistical test, we checked the normality assumption for each group using the Shapiro-Wilk test. The result showed a significant deviation from normality for the female group (p <0.05), while the male group did not significantly deviate (p > 0.05). Since at least one group violates the normality assumption, a non-parametric test (Wilcoxon-Mann-Whitney) is more appropriate than a t-test.
+
+```{r}
+wilcox.test(Weight ~ Gender, data = students)
+```
+```{r}
+test <- wilcox.test(Weight ~ Gender, data = students)
+Z <- qnorm(test$p.value / 2)
+r <- abs(Z) / sqrt(nrow(students))
+r
+```
+The Wilcoxon-Mann-Whitney test shows a statistically significant difference in weight between male and female students (p = 0.003, well below the 0.05 threshold). The effect size (r = 0.63) is large according to conventional benchmarks (small: r ≈ 0.1, medium: r ≈ 0.3, large: r ≈ 0.5). This confirms the visual impression from the boxplot: male students in this sample tend to weigh significantly more than female students. The difference is not just statistically significant, it is also practically meaningful given how large the effect size is.
+
+# What is the exact meaning of the following words in R: Vector, Matrix, List, Data Frame, Factor?
+A vector is a sequence of elements of the same type (all numeric, all character, etc.) — the most basic data structure in R, with one dimension.
+
+A matrix is a two-dimensional array, also of a single type, organized into rows and columns.
+
+A list is a collection of elements that can be of different types (a vector, a string, a data frame, even another list) — the most flexible container in R.
+
+A data frame is a two-dimensional table like a matrix, but each column can have a different type (numeric, character, etc.). It is the most common structure for real datasets, similar to a spreadsheet.
+
+A factor is a special type used to represent categorical variables (e.g. "Male"/"Female"). Internally, R stores it as integers linked to labels called levels.
+
+# What are the elements of a boxplot?
+A boxplot shows the median, the lower quartile (Q1), and the upper quartile (Q3) of a distribution. The line inside the box represents the median. The whiskers extend to the lowest and highest values that are not considered outliers (typically within 1.5 times the interquartile range). Any values beyond the whiskers are plotted individually as outliers.
 
