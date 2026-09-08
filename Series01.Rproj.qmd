@@ -9,3 +9,31 @@ Quarto enables you to weave together content and executable code into a finished
 ```{r}
 1 + 1
 ```
+# local library
+```{r load libraries} 
+# Load the necessary libraries for data manipulation and visualization
+# We need the tidyverse package for data manipulation and visualization
+
+library(tidyverse)
+```
+# Create a data frame containing the data required for the analysis
+```{r load data}
+# Create a data frame by reading in the data/IEAP-2025
+
+students <- read.csv("data/IEAP-2025.csv")
+```
+
+
+# Build a table with the data
+```{r}
+# build a table with the data
+# knirt::kable(students)
+
+# use the tibble function to create a tibble from the data frame
+as_tibble(students)
+```
+
+
+# Show the summary of the data frame
+
+# Explain why the summary is different from one column to the next
