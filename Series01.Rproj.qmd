@@ -33,7 +33,93 @@ students <- read.csv("data/IEAP-2025.csv")
 as_tibble(students)
 ```
 
-
 # Show the summary of the data frame
+```{r summary}
+summary(students)
+```
 
 # Explain why the summary is different from one column to the next
+The summary depends on the type of the data in the column. For example, the summary of a numeric column will show statistics like mean, median, while categorical columns will show counts of unique values.
+
+
+# Visualize the biometric data of the students
+# Figure 01 : Boxplot of Weight Distribution
+```{r}
+library(ggplot2)
+ggplot(students, aes(x = "", y = Weight)) +
+  stat_boxplot(geom = "errorbar", width = 0.2) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Weight Distribution",
+       x = "All students",
+       y = "Weight (kg)") +
+  theme_minimal()
+```
+# Figure 02 : Histogram of Weight Distribut
+```{r}
+ggplot(students, aes(x = Weight)) +
+  geom_histogram(binwidth = 5, fill = "white", color = "black") +
+  labs(title = "Histogram of Weight Distribution",
+       x = "Weight (kg)",
+       y = "Frequency (number of students)") +
+  theme_bw()
+```
+
+# Figure 03 : Densitogram of Weight Distribution
+```{r}
+ggplot(students, aes(x = Weight)) +
+  geom_density(fill = "lightgrey", alpha = 0.5) +
+  labs(title = "Densitogram of Weight Distribution",
+       x = "Weight (kg)",
+       y = "Density") +
+  theme_minimal()
+```
+# Understand a box plot : 
+URL : https://en.wikipedia.org/wiki/Box_plot
+A box plot permits to show the median, the lower quartile and the upper quartile of a distribution.
+The line inside this box is the median. 
+Outside we find the lowest and highest value (whiskers).
+
+```{r}
+library(dplyr)
+
+stats_ci <- students %>%
+  summarise(
+    mean = mean(Weight),
+    se = sd(Weight) / sqrt(n()),
+    ci_lower = mean - qt(0.975, df = n() - 1) * se,
+    ci_upper = mean + qt(0.975, df = n() - 1) * se
+  )
+```
+
+
+```{r}
+library(dplyr)
+
+stats_ci <- students %>%
+  summarise(
+    mean = mean(Weight),
+    se = sd(Weight) / sqrt(n()),
+    ci_lower = mean - qt(0.975, df = n() - 1) * se,
+    ci_upper = mean + qt(0.975, df = n() - 1) * se
+  )
+```
+
+
+```{r}
+set.seed(42)
+
+ggplot() +
+  geom_jitter(data = students, aes(x = 1, y = Weight), 
+              width = 0.2, height = 0, color = "grey40") +
+  geom_boxplot(data = students, aes(x = 2, y = Weight), 
+               width = 0.5, fill = "lightblue", color = "darkblue") +
+  geom_errorbar(data = stats_ci, aes(x = 3, ymin = ci_lower, ymax = ci_upper),
+                color = "red", width = 0.2) +
+  geom_point(data = stats_ci, aes(x = 3, y = mean), color = "red", size = 3) +
+  scale_x_continuous(limits = c(0.5, 3.5), breaks = NULL) +
+  labs(x = "", y = "Weight (kg)") +
+  theme_minimal()
+```
+
+
+
