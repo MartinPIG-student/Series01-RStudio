@@ -1,0 +1,19 @@
+---
+title: "Assignment - Series 01 RStudio"
+author: "Martin Pigeau"
+date: last-modified
+date-format: "DD MMMM YYYY, HH:mm:ss"
+format: typst
+---
+
+## 1. Conclusion in 4.1
+
+My conclusion is the same as his. The Wilcoxon-Mann-Whitney test I performed showed a statistically significant difference in weight between male and female students (p = 0.003), with a large effect size (r = 0.63). These values are very close to the ones given in the assignment (p = 0.0031, r = 0.6), leading to the same overall conclusion: male students in this sample weigh significantly more than female students, and this difference is not only statistically significant but also practically meaningful given the large effect size.
+
+## 2. Three most important things learnt
+
+1.  **Building real, reusable comparative graphs.** I learned to construct plots such as boxplots, histograms, and confidence intervals that are specifically designed to answer a comparative question, and that can be reused as a template for future projects and studies.
+
+2.  **Applying statistical tests learned in my Bachelor's directly in RStudio.** I put into practice concepts I had only seen theoretically before, such as normality testing, non-parametric tests, and effect size. I also learned how to choose the right test based on the actual properties of the data rather than applying one by default.
+
+3.  **Learning to use a LLM as a learning aid rather than a shortcut.** Throughout this series, I learned to ask targeted questions, verify explanations against official R documentation, and critically check the answers I received rather than copying them blindly.
