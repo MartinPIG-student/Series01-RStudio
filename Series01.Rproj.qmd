@@ -182,6 +182,8 @@ r
 The Wilcoxon-Mann-Whitney test shows a statistically significant difference in weight between male and female students (p = 0.003, well below the 0.05 threshold). The effect size (r = 0.63) is large according to conventional benchmarks (small: r ≈ 0.1, medium: r ≈ 0.3, large: r ≈ 0.5). This confirms the visual impression from the boxplot: male students in this sample tend to weigh significantly more than female students. The difference is not just statistically significant, it is also practically meaningful given how large the effect size is.
 
 # What is the exact meaning of the following words in R: Vector, Matrix, List, Data Frame, Factor?
+## Check to the console what is a vector, matrix, list, data.frame, and factor mean.
+
 A vector is a sequence of elements of the same type (all numeric, all character, etc.) — the most basic data structure in R, with one dimension.
 
 A matrix is a two-dimensional array, also of a single type, organized into rows and columns.
@@ -195,3 +197,7 @@ A factor is a special type used to represent categorical variables (e.g. "Male"/
 # What are the elements of a boxplot?
 A boxplot shows the median, the lower quartile (Q1), and the upper quartile (Q3) of a distribution. The line inside the box represents the median. The whiskers extend to the lowest and highest values that are not considered outliers (typically within 1.5 times the interquartile range). Any values beyond the whiskers are plotted individually as outliers.
 
+# What are the three most important things you have learnt from this series of exercises?
+- Building real, reusable comparative graphs,learning to construct plots (boxplots, histograms, confidence intervals) that don't just display data, but are specifically designed to answer a comparative question, and that can be reused as a template for future projects and studies.s.
+- Applying statistical tests learned in my Bachelor's directly in RStudio. I put into practice concepts I had only seen theoretically before, such as normality testing, non-parametric tests, and effect size. I also learned how to choose the right test based on the actual properties of the data rather than applying one by default.
+- Learning to use an LLM as a learning aid rather than a shortcut. Throughout this series, I learned to ask targeted questions, verify explanations against official R documentation, and critically check the answers I received rather than copying them blindly. This helped me actually understand the concepts instead of just getting a working result.
